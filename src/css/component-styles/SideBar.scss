@@ -1,0 +1,30 @@
+.sideBarContainer {
+    position: absolute;
+    outline: none;
+    z-index: 100;
+
+}
+
+.side-bar {
+    height: 100% !important;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid;
+    border-radius: 0;
+    border-color: rgba(221, 235, 228, 0.693);
+    background-color: rgb(255, 255, 255);
+    transition: 0.8s ease;    
+}
+
+.toggle-menu {
+    height: 50px;
+    border-top-right-radius: 10rem;
+    border-bottom-right-radius: 9rem;
+    width: 10px;
+    position: absolute;
+    outline: none;
+    z-index: 100;
+    background-color: rgba(224, 235, 230, 0.693);
+    border-color: rgba(221, 235, 228, 0.693);
+    border-left: 0;
+}
