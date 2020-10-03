@@ -20,6 +20,7 @@ export class MapContainer extends Component {
 
     onReady = (mapProps,map) => {
       const {google} = mapProps;
+      this.props.setGoogleReferences(mapProps,map);
       if(!this.state.hasCenterMoved)
       {
         centerMapToLocation(map)
