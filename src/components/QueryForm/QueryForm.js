@@ -3,7 +3,6 @@ import QueryText from './QueryText'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { cases } from '../../constants'
-import { placeQuery } from '../../utils/placesQuery'
 import { placeHolder , formIDS } from './queryConstants'
 
 export class QueryForm extends Component {
@@ -11,17 +10,7 @@ export class QueryForm extends Component {
     
     onSubmit = async (event) => {
         event.preventDefault();
-        const poi1Element = document.getElementById(formIDS.poi1);
-        const poi2Element = document.getElementById(formIDS.poi2);
-        const distanceNumElement = document.getElementById(formIDS.distanceNumber);
-        const distanceCaseElement = document.getElementById(formIDS.distanceCase);
-        // console.log(poi1Element.value);
-        // console.log(poi2Element.value);
-        // console.log(distanceNumElement.value);
-        // console.log(distanceCaseElement.value == cases.MINUTES_WALKING);
-        const data = await placeQuery(poi1Element.value,30,{lat: 42.3514341, lon: -71.075554 });
-        console.log(data);
-        this.props.updatePointsOfInterestQuery([],[],0.0,cases.MINUTES_DRIVING);
+        await this.props.updatePointsOfInterestQuery();
     };
 
     render() {

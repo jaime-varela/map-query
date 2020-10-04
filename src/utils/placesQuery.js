@@ -19,19 +19,28 @@
       https://reactjs.org/docs/faq-functions.html
   // Call back to be passed into the form to update the state
 
+
+  https://developers.google.com/maps/documentation/javascript/places#maps_place_search_pagination-typescript
 */
 import axios from 'axios';
 import secrets from '../secrets'
 import { placesAPI } from '../constants'
 
-export const placeQuery = async (queryText,radius,location) => {
-  //latitude,longitude for the query.
-  const queryString = placesAPI.url + placesAPI.textSearchEndPoint + 
-    "?query=" + queryText+ 
-    "&location=" +location.lat +","+ location.lon + "&radius=" + radius +
-    "&key=" + secrets.googleMapApiKey;
-    const response = await axios.get(queryString);
-    const data = await response.json();
-    console.log(data);
-    return data;
+export const placeQuery = async (maps,map,queryText,radius,location) => {
+  var request = {
+    query: queryText,
+    fields: ['name', 'geometry','business_status','formatted_address'],
+  };// Photos may be useful
+  console.log(maps);
+  const places = window.google.maps.places;
+  var service = new places.PlacesService(map);
+
+  return new Promise((resolve,reject) => {
+      service.findPlaceFromQuery(request, function(results, status) {
+      if (status === places.PlacesServiceStatus.OK) {
+        resolve(results);
+      }
+      //TODO reject error handling
+    });
+  })    
 }

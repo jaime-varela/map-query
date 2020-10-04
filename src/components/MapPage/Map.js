@@ -10,7 +10,7 @@ export class MapContainer extends Component {
     };
 
     onBoundsChanged = () => {
-      console.log("center moved");
+
       if(!this.state.hasCenterMoved)
       {
         this.setState({...this.state,hasCenterMoved:true});
