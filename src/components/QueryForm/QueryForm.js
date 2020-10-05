@@ -4,14 +4,19 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { cases } from '../../constants'
 import { placeHolder , formIDS } from './queryConstants'
+import Spinner from 'react-bootstrap/Spinner'
 
 export class QueryForm extends Component {
-
+    state = {
+      loading: false,
+    }
     
     onSubmit = async (event) => {
         event.preventDefault();
+        this.setState({...this.state,loading:true});
         await this.props.updatePointsOfInterestQuery();
-    };
+        this.setState({...this.state,loading:false});
+      };
 
     render() {
         return (
@@ -35,10 +40,10 @@ export class QueryForm extends Component {
                   <option value={cases.MINUTES_DRIVING}>minutes driving</option>
                 </Form.Control>
               </Form.Group>
-
-              <Button variant="primary" type="submit">
-                Query
-              </Button>
+              {this.state.loading?
+                <Spinner animation="border" variant="primary" />
+                :<Button variant="primary" type="submit">Query</Button>
+              }
             </Form>
             </div>
     );
