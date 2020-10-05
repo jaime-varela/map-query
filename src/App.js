@@ -6,6 +6,8 @@ import secrets from './secrets'
 import { cases } from "./constants"
 import { formIDS } from './components/QueryForm/queryConstants'
 import { placeQuery } from './utils/placesQuery'
+import computeRadiusFromMap from './utils/computeRadiusFromMap';
+
 
 const gMapsKey = secrets.googleMapApiKey;
 
@@ -18,7 +20,6 @@ class App extends Component {
   // callback to update google references when map loads, I really should manage state better
   setGoogleReferences = (maps,map) => {
     this.setState({...this.state,maps:maps,map:map});
-    // console.log(this.state);
   }
   // local state for now
   // might use redux later
@@ -39,17 +40,19 @@ class App extends Component {
     const poi2Element = document.getElementById(formIDS.poi2);
     const distanceNumElement = document.getElementById(formIDS.distanceNumber);
     const distanceCaseElement = document.getElementById(formIDS.distanceCase);
-    const data = await placeQuery(this.state.maps,this.state.map,poi1Element.value,30,{lat: 42.3514341, lon: -71.075554 });
-    console.log(data);
 
-
+    const radius = computeRadiusFromMap(this.state.map);
+    const center = this.state.map.getCenter();
+    console.log(center);
+    const POI1 = await placeQuery(this.state.maps,this.state.map,poi1Element.value,radius,center);
+    const POI2 = await placeQuery(this.state.maps,this.state.map,poi2Element.value,radius,center);
     //remember you're sending this state to the map
-    // this.setState({...this.state,
-    //   pointsOfInterest1:poi1,
-    //   pointsOfInterest2:poi2,
-    //   distanceSpecification: dist,
-    //   distanceCase:myCase
-    // });
+    this.setState({...this.state,
+      pointsOfInterest1:POI1,
+      pointsOfInterest2:POI2,
+      distanceSpecification: Number(distanceNumElement.value),
+      distanceCase: Number(distanceCaseElement.value),
+    });
   };
   render() {
     return (
@@ -67,6 +70,12 @@ class App extends Component {
           <Map 
           googleMapKey={gMapsKey}
           setGoogleReferences={this.setGoogleReferences}
+          markerInfo={{
+            pointsOfInterest1:this.state.pointsOfInterest1,
+            pointsOfInterest2:this.state.pointsOfInterest2,
+            distanceSpecification: this.state.distanceSpecification,
+            distanceCase:this.state.distanceCase,
+          }}
           ></Map>
         </div>
       </div>

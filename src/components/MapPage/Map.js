@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, Marker} from 'google-maps-react';
 import { basicStyle } from './styles'
 import centerMapToLocation from './utils/centerMapToLocation'
+import { iconURLS } from './constants'
 
 export class MapContainer extends Component {
 
@@ -15,7 +16,8 @@ export class MapContainer extends Component {
       {
         this.setState({...this.state,hasCenterMoved:true});
       }
-    
+      // for debuging use bounds change to check state
+      // console.log(this.props.markerInfo.pointsOfInterest1);
     }
 
     onReady = (mapProps,map) => {
@@ -39,7 +41,21 @@ export class MapContainer extends Component {
             onReady={this.onReady}
             onDragend={this.onBoundsChanged}
           >
-          <Marker position={{ lat: 48.00, lng: -122.00}} />
+            {this.props.markerInfo.pointsOfInterest1.map(poi => {
+              return <Marker
+                name={poi.name}
+                title={poi.name}
+                position={poi.geometry.location}
+              ></Marker>
+            })}
+            {this.props.markerInfo.pointsOfInterest2.map(poi => {
+              return <Marker
+                name={poi.name}
+                title={poi.name}
+                position={poi.geometry.location}
+                icon={{url: iconURLS.blueIcon}}
+              ></Marker>
+            })}
           </Map>
       );
     }
