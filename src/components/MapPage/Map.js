@@ -46,7 +46,8 @@ export class MapContainer extends Component {
                 name={poi.name}
                 title={poi.name}
                 position={poi.geometry.location}
-              ></Marker>
+                icon={{url: iconURLS.redIcon}}
+                ></Marker>
             })}
             {this.props.markerInfo.pointsOfInterest2.map(poi => {
               return <Marker
