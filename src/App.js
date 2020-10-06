@@ -41,9 +41,11 @@ class App extends Component {
     const distanceNumElement = document.getElementById(formIDS.distanceNumber);
     const distanceCaseElement = document.getElementById(formIDS.distanceCase);
 
-    const radius = computeRadiusFromMap(this.state.map);
+    // Google maps displays results outside of the range so this factor is used to tune
+    const compensatingFactor = 0.5;
+    const radius = compensatingFactor * computeRadiusFromMap(this.state.map);
     const center = this.state.map.getCenter();
-    console.log(center);
+
     const POI1 = await placeQuery(this.state.maps,this.state.map,poi1Element.value,radius,center);
     const POI2 = await placeQuery(this.state.maps,this.state.map,poi2Element.value,radius,center);
     //remember you're sending this state to the map

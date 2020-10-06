@@ -4,7 +4,7 @@ export const placeQuery = async (maps,map,queryText,radius,location) => {
     query: queryText,
     location: location,
     radius: radius,
-    fields: ['name', 'geometry','business_status','formatted_address'],
+    fields: ['name', 'geometry','business_status','formatted_address','placeId'],
   };// Photos may be useful
   const places = window.google.maps.places;
   var service = new places.PlacesService(map);

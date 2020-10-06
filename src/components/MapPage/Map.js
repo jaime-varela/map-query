@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper, Marker} from 'google-maps-react';
+import { Map, GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
 import { basicStyle } from './styles'
 import centerMapToLocation from './utils/centerMapToLocation'
 import { iconURLS } from './constants'
+import infoWindowString from './infoWindowString'
 
 export class MapContainer extends Component {
 
     state = {
         hasCenterMoved: false, //used to center only once then give user control
+        map: null,
+        maps: null,
     };
 
     onBoundsChanged = () => {
@@ -27,7 +30,22 @@ export class MapContainer extends Component {
       {
         centerMapToLocation(map)
       }
-      //const  service = new google.maps.places.PlacesService(map);
+      this.setState({map: map, maps: mapProps});
+
+    }
+
+    onMarkerClick = (props, marker, e) => {
+      let placeId = marker.name;
+      let poi1 = this.props.markerInfo.pointsOfInterest1.find(poi => poi.place_id == placeId);
+      let poi2 = this.props.markerInfo.pointsOfInterest2.find(poi => poi.place_id == placeId);
+      let poi = poi1? poi1 : poi2;
+      const contentString = infoWindowString(poi);
+  
+    const infowindow = new window.google.maps.InfoWindow({
+      content: contentString,
+    });
+    infowindow.open(this.state.map,marker);
+    
     }
   
     render() {
@@ -43,19 +61,21 @@ export class MapContainer extends Component {
           >
             {this.props.markerInfo.pointsOfInterest1.map(poi => {
               return <Marker
-                name={poi.name}
                 title={poi.name}
+                name={poi.place_id}
                 position={poi.geometry.location}
                 icon={{url: iconURLS.redIcon}}
+                onClick={(props, marker, e) => this.onMarkerClick(props, marker, e)}
                 ></Marker>
             })}
             {this.props.markerInfo.pointsOfInterest2.map(poi => {
               return <Marker
-                name={poi.name}
                 title={poi.name}
+                name={poi.place_id}
                 position={poi.geometry.location}
                 icon={{url: iconURLS.blueIcon}}
-              ></Marker>
+                onClick={(props, marker, e) => this.onMarkerClick(props, marker, e)}
+            ></Marker>
             })}
           </Map>
       );
