@@ -12,3 +12,8 @@ export const formIDS = {
     distanceNumber: "formControlDistanceNumber",
     distanceCase: "formControlDistanceCase",
 };
+
+export const imageUrls = {
+    distanceToggleDown: process.env.PUBLIC_URL + "/images/circle-down.png",
+    distanceToggleUp: process.env.PUBLIC_URL + "/images/circle-up.png"
+}

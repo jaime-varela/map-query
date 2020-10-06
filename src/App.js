@@ -50,8 +50,8 @@ class App extends Component {
     this.setState({...this.state,
       pointsOfInterest1:POI1,
       pointsOfInterest2:POI2,
-      distanceSpecification: Number(distanceNumElement.value),
-      distanceCase: Number(distanceCaseElement.value),
+      distanceSpecification: distanceNumElement? Number(distanceNumElement.value) : 0.0,
+      distanceCase: distanceCaseElement? Number(distanceCaseElement.value) : cases.MINUTES_WALKING,
     });
   };
   render() {
