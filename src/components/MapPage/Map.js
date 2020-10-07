@@ -7,11 +7,17 @@ import infoWindowString from './infoWindowString'
 
 export class MapContainer extends Component {
 
-    state = {
+  constructor(props) {
+      super(props);
+      this.state = {
         hasCenterMoved: false, //used to center only once then give user control
         map: null,
         maps: null,
-    };
+        visibleInfoWindows: {},
+        detailService: null
+      };
+    }
+
 
     onBoundsChanged = () => {
 
@@ -30,23 +36,28 @@ export class MapContainer extends Component {
       {
         centerMapToLocation(map)
       }
-      this.setState({map: map, maps: mapProps});
+      let service = new window.google.maps.places.PlacesService(map);
+      this.setState({map: map, maps: mapProps,detailService: service});
 
     }
 
-    onMarkerClick = (props, marker, e) => {
+    onMarkerClick = async (props, marker, e) => {
       let placeId = marker.name;
+      if(this.state.visibleInfoWindows[placeId] && this.state.visibleInfoWindows[placeId].getMap())
+      {
+          return;
+      }
       let poi1 = this.props.markerInfo.pointsOfInterest1.find(poi => poi.place_id == placeId);
       let poi2 = this.props.markerInfo.pointsOfInterest2.find(poi => poi.place_id == placeId);
       let poi = poi1? poi1 : poi2;
-      const contentString = infoWindowString(poi);
+      const contentString = await infoWindowString(poi,this.state.detailService);
   
     const infowindow = new window.google.maps.InfoWindow({
       content: contentString,
     });
+    this.state.visibleInfoWindows[placeId] = infowindow;
     infowindow.open(this.state.map,marker);
-    
-    }
+  }
   
     render() {
       return (

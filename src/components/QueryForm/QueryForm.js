@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
+import Tooltip from 'react-bootstrap/Tooltip'
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import { cases } from '../../constants'
 import { placeHolder , formIDS, imageUrls } from './queryConstants'
 import { iconURLS } from '../MapPage/constants'
@@ -27,6 +29,12 @@ export class QueryForm extends Component {
       // toggle view distance
       this.setState({...this.state,viewDistance: !this.state.viewDistance});
     }
+    // --------------- Begin Tooltip renders ----------------------
+    renderToggleDistanceTooltip = (props) => (
+      <Tooltip id="toggleDistanceTooltip" {...props}>
+        {this.state.viewDistance? "Ignore Distance":"Restrict by distance"}
+      </Tooltip>
+    );
 
     render() {
         return (
@@ -57,9 +65,15 @@ export class QueryForm extends Component {
                 </Row>
               </Form.Group>
               <Form.Group>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 250, hide: 100 }}
+                  overlay={this.renderToggleDistanceTooltip}
+                >
                 <Button onClick={this.handleViewDistanceClick} variant="light">
                   <Image src={this.state.viewDistance? imageUrls.distanceToggleUp: imageUrls.distanceToggleDown}  roundedCircle />
                 </Button>
+                </OverlayTrigger>
               </Form.Group>
               {(!this.state.viewDistance)?               
               <div></div>:<Form.Group controlId="formDistanceSpecification">
