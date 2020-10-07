@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
+import { Map, GoogleApiWrapper, Marker} from 'google-maps-react';
 import { basicStyle } from './styles'
 import centerMapToLocation from './utils/centerMapToLocation'
 import { iconURLS } from './constants'

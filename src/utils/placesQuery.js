@@ -1,5 +1,6 @@
 
 export const placeQuery = async (maps,map,queryText,radius,location) => {
+  if(queryText == "") return new Promise((resolve,reject) => {resolve([])});
   var request = {
     query: queryText,
     location: location,
