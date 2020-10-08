@@ -1,5 +1,6 @@
 import React from 'react'
 import { renderToString } from "react-dom/server";
+import Card from 'react-bootstrap/Card'
 
 export default async (poi,service) => {
     if(poi == null) return '<div></div>';    
@@ -19,16 +20,17 @@ export default async (poi,service) => {
     }));
     // console.log(details);
     return renderToString(
-        <div className="infoWindowContainer">
-          <div className="infoWindowHeader" id={`infoWindow${poi.place_id}`}>
-            {(details && details.website)? <a className="infoWindowHeaderLink" href={details.website} target="_blank"><h3>{poi.name}</h3></a>
-            : <h3>{poi.name}</h3>}
-          </div>
-          {poi.photos? <img className="infoWindowImage" src={poi.photos[0].getUrl()}></img> : <div></div>}
-          {(details && details.formatted_phone_number)? 
-          <div className="infoWindowPhone"><a href={`tel:${details.formatted_phone_number}`}>{details.formatted_phone_number}</a> </div>
-        : <div className="infoWindowPhone"></div>}
-          <div className="infoWindowAddress">{poi.formatted_address}</div>
-      </div>
-    );
+      <Card style={{ width: '18rem' }}>
+        {poi.photos? <Card.Img variant="top" src={poi.photos[0].getUrl()} /> : <div></div>}
+        <Card.Body>
+          <Card.Title>{(details && details.website)? <a className="infoWindowHeaderLink" href={details.website} target="_blank"><h3>{poi.name}</h3></a>
+            : <h3>{poi.name}</h3>}</Card.Title>
+          <Card.Text>
+            {(details && details.formatted_phone_number)? 
+            <div className="infoWindowPhone"><a href={`tel:${details.formatted_phone_number}`}>{details.formatted_phone_number}</a> </div>
+          : <div className="infoWindowPhone"></div>}
+            <div className="infoWindowAddress">{poi.formatted_address}</div>          </Card.Text>
+        </Card.Body>
+      </Card>
+   );
 }
