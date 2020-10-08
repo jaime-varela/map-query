@@ -62,7 +62,7 @@ export class MapContainer extends Component {
       Event handlers of info window childs must be handled only when they are domready.
     */
     window.google.maps.event.addListener(infowindow, "domready", () => {
-      handleInfoWindowEvents();
+      handleInfoWindowEvents(placeId);
     });
 
   }

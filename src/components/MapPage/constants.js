@@ -7,4 +7,5 @@ export const iconURLS = {
 export const infoWinClassNames = {
     hoursCollapsible : "infoWindowTodaysHours",
     hoursContent : "infoWindowHoursContent",
+    OpenClosedInfo: "infoWindowOpenClosed"
 };

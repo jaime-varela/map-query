@@ -5,8 +5,7 @@ import { infoWinClassNames } from './constants'
 
 export default async (poi,service) => {
     if(poi == null) return '<div></div>';    
-    // console.log(poi);
-    // console.log(poi.opening_hours.open_now);
+
     let request = {
       placeId: poi.place_id,
       fields: ['rating', 'formatted_phone_number','website','opening_hours']      
@@ -19,7 +18,26 @@ export default async (poi,service) => {
         resolve(null);
       })
     }));
-    // console.log(details);
+
+    let dateVal = new Date();
+    let dayOfWeek = dateVal.getDay();
+    let googleDaysOfWeek = [];
+    let currentDay = "";
+    let shiftedDayArray = [];
+    let isOpen = false;
+    if(details.opening_hours)
+    {
+      googleDaysOfWeek = details.opening_hours.weekday_text;
+      currentDay = googleDaysOfWeek[(dayOfWeek + 6) % 7 ];
+      // shifted array so current day is zero
+      for (let index = 0; index < googleDaysOfWeek.length; index++) {
+        shiftedDayArray[index] = googleDaysOfWeek[(dayOfWeek + 6 + index) % 7];      
+      }
+      // delete the current day
+      delete shiftedDayArray[0];
+      isOpen = details.opening_hours.open_now;  
+    }
+
     return renderToString(
       <Card style={{ width: '18rem' }}>
         {poi.photos? <Card.Img variant="top" src={poi.photos[0].getUrl()} /> : <div></div>}
@@ -27,15 +45,24 @@ export default async (poi,service) => {
           <Card.Title>{(details && details.website)? <a className="infoWindowHeaderLink" href={details.website} target="_blank"><h3>{poi.name}</h3></a>
             : <h3>{poi.name}</h3>}
           </Card.Title>
-          <button type="button" class={infoWinClassNames.hoursCollapsible}>Open Collapsible</button>
+          <button type="button" id={"infoWindowCollapsible" + poi.place_id}class={infoWinClassNames.hoursCollapsible}>{currentDay? currentDay :
+          "Hours not avaialble"
+          }</button>
           <div class={infoWinClassNames.hoursContent}>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <div></div>
+            {shiftedDayArray? shiftedDayArray.map( day =>{
+              return (<p>{day}</p>);
+            }): <div></div>}
+          </div>
+          <div class={infoWinClassNames.OpenClosedInfo}>
+            {isOpen? <p style={{color:"green"}}><strong>open now</strong></p>:<p style={{color:"red"}}><strong>closed or no info</strong></p>}
           </div>
           <Card.Text>
             {(details && details.formatted_phone_number)? 
             <div className="infoWindowPhone"><a href={`tel:${details.formatted_phone_number}`}>{details.formatted_phone_number}</a> </div>
           : <div className="infoWindowPhone"></div>}
-            <div className="infoWindowAddress">{poi.formatted_address}</div>          </Card.Text>
+            <div className="infoWindowAddress">{poi.formatted_address}</div>          
+          </Card.Text>
         </Card.Body>
       </Card>
    );
