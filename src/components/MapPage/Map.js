@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useImperativeHandle } from 'react';
 import { Map, GoogleApiWrapper, Marker} from 'google-maps-react';
 import { basicStyle } from './styles'
 import centerMapToLocation from './utils/centerMapToLocation'
 import { iconURLS } from './constants'
 import infoWindowString from './infoWindowString'
+import handleInfoWindowEvents from './handleInfoWindowEvents'
 
 export class MapContainer extends Component {
 
@@ -57,6 +58,13 @@ export class MapContainer extends Component {
     });
     this.state.visibleInfoWindows[placeId] = infowindow;
     infowindow.open(this.state.map,marker);
+    /*
+      Event handlers of info window childs must be handled only when they are domready.
+    */
+    window.google.maps.event.addListener(infowindow, "domready", () => {
+      handleInfoWindowEvents();
+    });
+
   }
   
     render() {
