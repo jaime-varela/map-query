@@ -78,7 +78,7 @@ export class QueryForm extends Component {
               {(!this.state.viewDistance)?               
               <div></div>:<Form.Group controlId="formDistanceSpecification">
                 <Form.Label>Within</Form.Label>
-                <Form.Control id={formIDS.distanceNumber} type="number" placeholder={1} />
+                <Form.Control id={formIDS.distanceNumber} type="number" min={0}/>
                 <Form.Control id={formIDS.distanceCase} as="select" disabled={true}>
                   <option value={cases.MINUTES_WALKING}>minutes walking</option>
                   <option value={cases.MINUTES_DRIVING}>minutes driving</option>

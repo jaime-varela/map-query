@@ -7,7 +7,7 @@ import { cases } from "./constants"
 import { formIDS } from './components/QueryForm/queryConstants'
 import { placeQuery } from './utils/placesQuery'
 import computeRadiusFromMap from './utils/computeRadiusFromMap';
-
+import filterLocationByProximity from './utils/filterLocationByProximity'
 
 const gMapsKey = secrets.googleMapApiKey;
 
@@ -32,6 +32,8 @@ class App extends Component {
     // maps refs
     map: null,
     maps: null,
+    displayPOI1: [],
+    displayPOI2: [],
   };
   
   updatePointsOfInterestQuery = async () => {    
@@ -48,12 +50,20 @@ class App extends Component {
 
     const POI1 = await placeQuery(this.state.maps,this.state.map,poi1Element.value,radius,center);
     const POI2 = await placeQuery(this.state.maps,this.state.map,poi2Element.value,radius,center);
+
+    let filteredPoints = {filteredPOI1: POI1,filteredPOI2:POI2};
+    if(distanceCaseElement && distanceNumElement)
+    {
+      filteredPoints = filterLocationByProximity(POI1,POI2,distanceNumElement.value,distanceCaseElement.value);
+    }
     //remember you're sending this state to the map
     this.setState({...this.state,
       pointsOfInterest1:POI1,
       pointsOfInterest2:POI2,
       distanceSpecification: distanceNumElement? Number(distanceNumElement.value) : 0.0,
       distanceCase: distanceCaseElement? Number(distanceCaseElement.value) : cases.MINUTES_WALKING,
+      displayPOI1: filteredPoints.filteredPOI1,
+      displayPOI2: filteredPoints.filteredPOI2,
     });
   };
   render() {
@@ -73,8 +83,8 @@ class App extends Component {
           googleMapKey={gMapsKey}
           setGoogleReferences={this.setGoogleReferences}
           markerInfo={{
-            pointsOfInterest1:this.state.pointsOfInterest1,
-            pointsOfInterest2:this.state.pointsOfInterest2,
+            pointsOfInterest1:this.state.displayPOI1,
+            pointsOfInterest2:this.state.displayPOI2,
             distanceSpecification: this.state.distanceSpecification,
             distanceCase:this.state.distanceCase,
           }}
