@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import QueryText from './QueryText'
+import DistanceFormText from './DistanceFormText'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
@@ -77,6 +78,7 @@ export class QueryForm extends Component {
               </Form.Group>
               {(!this.state.viewDistance)?               
               <div></div>:<Form.Group controlId="formDistanceSpecification">
+                <DistanceFormText></DistanceFormText>
                 <Form.Label>Within</Form.Label>
                 <Form.Control id={formIDS.distanceNumber} type="number" min={0}/>
                 <Form.Control id={formIDS.distanceCase} as="select" disabled={true}>
