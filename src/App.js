@@ -19,9 +19,6 @@ class App extends Component {
     this.updatePointsOfInterestQuery = this.updatePointsOfInterestQuery.bind(this); 
     this.setGoogleReferences = this.setGoogleReferences.bind(this);  
   }
-  // isDesktopOrLaptop = useMediaQuery({
-  //   query: '(min-device-width: 1224px)'
-  // });
   
   // callback to update google references when map loads, I really should manage state better
   setGoogleReferences = (maps,map) => {
