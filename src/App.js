@@ -8,6 +8,8 @@ import { formIDS } from './components/QueryForm/queryConstants'
 import { placeQuery } from './utils/placesQuery'
 import computeRadiusFromMap from './utils/computeRadiusFromMap';
 import filterLocationByProximity from './utils/filterLocationByProximity'
+import MobileDisabled from './MobileDisabled'
+import MediaQuery from 'react-responsive'
 
 const gMapsKey = secrets.googleMapApiKey;
 
@@ -17,6 +19,10 @@ class App extends Component {
     this.updatePointsOfInterestQuery = this.updatePointsOfInterestQuery.bind(this); 
     this.setGoogleReferences = this.setGoogleReferences.bind(this);  
   }
+  // isDesktopOrLaptop = useMediaQuery({
+  //   query: '(min-device-width: 1224px)'
+  // });
+  
   // callback to update google references when map loads, I really should manage state better
   setGoogleReferences = (maps,map) => {
     this.setState({...this.state,maps:maps,map:map});
@@ -69,6 +75,8 @@ class App extends Component {
   render() {
     return (
       <div className="viewport">
+        <MediaQuery maxDeviceWidth={1224}><MobileDisabled></MobileDisabled></MediaQuery>
+        <MediaQuery minDeviceWidth={1224}>
         <div className="sideBarContainer">
           <Sidebar width={400} height={"100vh"}>
             <QueryForm 
@@ -90,6 +98,7 @@ class App extends Component {
           }}
           ></Map>
         </div>
+        </MediaQuery>
       </div>
     );  
   }
