@@ -15,7 +15,7 @@ export default async (poi,service) => {
         resolve(null);
       })
     }));
-    // console.log(details);
+
     return renderToString(
         <div className="infoWindowContainer">
           <div className="infoWindowHeader" id={`infoWindow${poi.place_id}`}>

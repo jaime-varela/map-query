@@ -27,7 +27,6 @@ export class MapContainer extends Component {
         this.setState({...this.state,hasCenterMoved:true});
       }
       // for debuging use bounds change to check state
-      // console.log(this.props.markerInfo.pointsOfInterest1);
     }
 
     onReady = (mapProps,map) => {

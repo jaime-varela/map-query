@@ -35,7 +35,6 @@ export default async (poi,service) => {
       }
       // delete the current day
       delete shiftedDayArray[0];
-      console.log(details);
       isOpen = details.opening_hours.open_now;  
     }
 
