@@ -14,7 +14,7 @@ export default async (poi,service) => {
     let details = await (new Promise((resolve,reject) => {
       service.getDetails(request,(place,status) => {
         if(status == window.google.maps.places.PlacesServiceStatus.OK){
-          isOpen = place.opening_hours.isOpen();
+          isOpen = (place.opening_hours)? place.opening_hours.isOpen() : false;
           resolve(place);
         }
         resolve(null);
@@ -35,7 +35,6 @@ export default async (poi,service) => {
       }
       // delete the current day
       delete shiftedDayArray[0];
-      isOpen = details.opening_hours.open_now;  
     }
 
     return renderToString(
