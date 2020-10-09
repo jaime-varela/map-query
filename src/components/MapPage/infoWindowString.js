@@ -8,23 +8,23 @@ export default async (poi,service) => {
 
     let request = {
       placeId: poi.place_id,
-      fields: ['rating', 'formatted_phone_number','website','opening_hours']      
+      fields: ['rating', 'formatted_phone_number','website','opening_hours','utc_offset_minutes']      
     }
+    let isOpen = false;
     let details = await (new Promise((resolve,reject) => {
       service.getDetails(request,(place,status) => {
         if(status == window.google.maps.places.PlacesServiceStatus.OK){
+          isOpen = place.opening_hours.isOpen();
           resolve(place);
         }
         resolve(null);
       })
     }));
-
     let dateVal = new Date();
     let dayOfWeek = dateVal.getDay();
     let googleDaysOfWeek = [];
     let currentDay = "";
     let shiftedDayArray = [];
-    let isOpen = false;
     if(details.opening_hours)
     {
       googleDaysOfWeek = details.opening_hours.weekday_text;
@@ -35,6 +35,7 @@ export default async (poi,service) => {
       }
       // delete the current day
       delete shiftedDayArray[0];
+      console.log(details);
       isOpen = details.opening_hours.open_now;  
     }
 

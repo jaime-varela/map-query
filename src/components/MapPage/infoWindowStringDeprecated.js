@@ -3,8 +3,6 @@ import { renderToString } from "react-dom/server";
 
 export default async (poi,service) => {
     if(poi == null) return '<div></div>';    
-    // console.log(poi);
-    // console.log(poi.opening_hours.open_now);
     let request = {
       placeId: poi.place_id,
       fields: ['rating', 'formatted_phone_number','website','opening_hours']      
