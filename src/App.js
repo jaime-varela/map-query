@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Map from './components/MapPage/Map'
 import Sidebar from './components/SidePanel/Sidebar'
 import QueryForm from './components/QueryForm/QueryForm'
-import secrets from './secrets'
 import { cases } from "./constants"
 import { formIDS } from './components/QueryForm/queryConstants'
 import { placeQuery } from './utils/placesQuery'
