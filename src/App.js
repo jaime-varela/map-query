@@ -11,7 +11,7 @@ import filterLocationByProximity from './utils/filterLocationByProximity'
 import MobileDisabled from './MobileDisabled'
 import MediaQuery from 'react-responsive'
 
-const gMapsKey = secrets.googleMapApiKey;
+const gMapsKey = "AIzaSyBPLt1VwIxDl8r2YbDCx_ND_l7mebTzRtM";
 
 class App extends Component {
   constructor(props) {
