@@ -1,7 +1,9 @@
 import React from 'react'
-import { renderToString } from "react-dom/server";
+import { renderToString } from "react-dom/server"
 import Card from 'react-bootstrap/Card'
 import { infoWinClassNames } from './constants'
+import MediaQuery from 'react-responsive'
+
 
 export default async (poi,service) => {
     if(poi == null) return '<div></div>';    
@@ -25,6 +27,7 @@ export default async (poi,service) => {
     let googleDaysOfWeek = [];
     let currentDay = "";
     let shiftedDayArray = [];
+
     if(details.opening_hours)
     {
       googleDaysOfWeek = details.opening_hours.weekday_text;
@@ -39,7 +42,8 @@ export default async (poi,service) => {
 
     return renderToString(
       <Card style={{ width: '18rem' }}>
-        {poi.photos? <Card.Img variant="top" src={poi.photos[0].getUrl()} /> : <div></div>}
+        {poi.photos? <MediaQuery minDeviceWidth={1224}><Card.Img variant="top" src={poi.photos[0].getUrl()} /></MediaQuery> 
+        : <div></div>}
         <Card.Body>
           <Card.Title>{(details && details.website)? <a className="infoWindowHeaderLink" href={details.website} target="_blank"><h3>{poi.name}</h3></a>
             : <h3>{poi.name}</h3>}
@@ -56,12 +60,14 @@ export default async (poi,service) => {
           <div class={infoWinClassNames.OpenClosedInfo}>
             {isOpen? <p style={{color:"green"}}><strong>open now</strong></p>:<p style={{color:"red"}}><strong>closed or no info</strong></p>}
           </div>
+          <MediaQuery minDeviceWidth={1224}>
           <Card.Text>
             {(details && details.formatted_phone_number)? 
             <div className="infoWindowPhone"><a href={`tel:${details.formatted_phone_number}`}>{details.formatted_phone_number}</a> </div>
           : <div className="infoWindowPhone"></div>}
             <div className="infoWindowAddress">{poi.formatted_address}</div>          
           </Card.Text>
+          </MediaQuery>
         </Card.Body>
       </Card>
    );

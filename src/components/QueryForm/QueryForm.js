@@ -12,6 +12,7 @@ import { cases } from '../../constants'
 import { placeHolder , formIDS, imageUrls } from './queryConstants'
 import { iconURLS } from '../MapPage/constants'
 import Spinner from 'react-bootstrap/Spinner'
+import MediaQuery from 'react-responsive'
 
 export class QueryForm extends Component {
     state = {
@@ -40,7 +41,9 @@ export class QueryForm extends Component {
     render() {
         return (
             <div className="formContainer">
-            <QueryText></QueryText>
+            <MediaQuery  minDeviceWidth={1224}>
+              <QueryText></QueryText>              
+            </MediaQuery>
             <Form onSubmit={this.onSubmit}>
               <Form.Group controlId="formPointOfInterest1">
                 <Form.Label>Find </Form.Label>
@@ -78,7 +81,9 @@ export class QueryForm extends Component {
               </Form.Group>
               {(!this.state.viewDistance)?               
               <div></div>:<Form.Group controlId="formDistanceSpecification">
-                <DistanceFormText></DistanceFormText>
+                <MediaQuery  minDeviceWidth={1224}>
+                  <DistanceFormText></DistanceFormText>
+                </MediaQuery>
                 <Form.Label>Within</Form.Label>
                 <Form.Control id={formIDS.distanceNumber} type="number" min={0}/>
                 <Form.Control id={formIDS.distanceCase} as="select" disabled={true}>

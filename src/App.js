@@ -7,7 +7,6 @@ import { formIDS } from './components/QueryForm/queryConstants'
 import { placeQuery } from './utils/placesQuery'
 import computeRadiusFromMap from './utils/computeRadiusFromMap';
 import filterLocationByProximity from './utils/filterLocationByProximity'
-import MobileDisabled from './MobileDisabled'
 import MediaQuery from 'react-responsive'
 
 const gMapsKey = "AIzaSyBPLt1VwIxDl8r2YbDCx_ND_l7mebTzRtM";
@@ -71,7 +70,29 @@ class App extends Component {
   render() {
     return (
       <div className="viewport">
-        <MediaQuery maxDeviceWidth={1224}><MobileDisabled></MobileDisabled></MediaQuery>
+        <MediaQuery maxDeviceWidth={1224}>
+        <div className="sideBarContainerMobile">
+          <Sidebar width={250} height={"100vh"}>
+            <QueryForm 
+            updatePointsOfInterestQuery={this.updatePointsOfInterestQuery}
+            googleRef = {this.state.maps}
+            googleMap = {this.state.map}>
+            </QueryForm>
+        </Sidebar>
+        </div>
+        <div className="static-pane-mobile">
+          <Map 
+          googleMapKey={gMapsKey}
+          setGoogleReferences={this.setGoogleReferences}
+          markerInfo={{
+            pointsOfInterest1:this.state.displayPOI1,
+            pointsOfInterest2:this.state.displayPOI2,
+            distanceSpecification: this.state.distanceSpecification,
+            distanceCase:this.state.distanceCase,
+          }}
+          ></Map>  
+          </div>      
+        </MediaQuery>
         <MediaQuery minDeviceWidth={1224}>
         <div className="sideBarContainer">
           <Sidebar width={400} height={"100vh"}>
@@ -80,7 +101,7 @@ class App extends Component {
             googleRef = {this.state.maps}
             googleMap = {this.state.map}>
             </QueryForm>
-        </Sidebar>
+          </Sidebar>
         </div>
         <div className="static-pane">
           <Map 
