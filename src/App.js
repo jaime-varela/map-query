@@ -35,6 +35,7 @@ class App extends Component {
     maps: null,
     displayPOI1: [],
     displayPOI2: [],
+    adjacencyList: {},
   };
   
   updatePointsOfInterestQuery = async () => {    
@@ -65,6 +66,7 @@ class App extends Component {
       distanceCase: distanceCaseElement? Number(distanceCaseElement.value) : cases.MINUTES_WALKING,
       displayPOI1: filteredPoints.filteredPOI1,
       displayPOI2: filteredPoints.filteredPOI2,
+      adjacencyList: filteredPoints.adjacencyList,
     });
   };
   render() {
@@ -112,6 +114,7 @@ class App extends Component {
             pointsOfInterest2:this.state.displayPOI2,
             distanceSpecification: this.state.distanceSpecification,
             distanceCase:this.state.distanceCase,
+            adjacencyList: this.state.adjacencyList,
           }}
           ></Map>
         </div>

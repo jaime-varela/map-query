@@ -18,8 +18,6 @@ export default (map) =>
             let data = {};
             if (ipRequest.readyState === 4) {
               data = JSON.parse(ipRequest.responseText);
-              console.log(ipRequest);
-              console.log(ipRequest.responseText);
               map.setCenter({lat: data.latitude,
                  lng: data.longitude,
               });

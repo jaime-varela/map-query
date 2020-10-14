@@ -6,8 +6,7 @@ import MediaQuery from 'react-responsive'
 
 
 export default async (poi,service) => {
-    if(poi == null) return '<div></div>';    
-
+  if(poi == null) return '<div></div>';    
     let request = {
       placeId: poi.place_id,
       fields: ['rating', 'formatted_phone_number','website','opening_hours','utc_offset_minutes']      
@@ -27,8 +26,7 @@ export default async (poi,service) => {
     let googleDaysOfWeek = [];
     let currentDay = "";
     let shiftedDayArray = [];
-
-    if(details.opening_hours)
+    if(details && details.opening_hours)
     {
       googleDaysOfWeek = details.opening_hours.weekday_text;
       currentDay = googleDaysOfWeek[(dayOfWeek + 6) % 7 ];
@@ -48,7 +46,7 @@ export default async (poi,service) => {
           <Card.Title>{(details && details.website)? <a className="infoWindowHeaderLink" href={details.website} target="_blank"><h3>{poi.name}</h3></a>
             : <h3>{poi.name}</h3>}
           </Card.Title>
-          <button type="button" id={"infoWindowCollapsible" + poi.place_id}class={infoWinClassNames.hoursCollapsible}>{currentDay? currentDay :
+          <button type="button" id={"infoWindowCollapsible" + poi.place_id} class={infoWinClassNames.hoursCollapsible}>{currentDay? currentDay :
           "Hours not avaialble"
           }</button>
           <div class={infoWinClassNames.hoursContent}>

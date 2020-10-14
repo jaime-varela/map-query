@@ -2,6 +2,7 @@
 export const iconURLS = {
     blueIcon: "https://maps.google.com/mapfiles/ms/micons/blue.png",
     redIcon: "https://maps.google.com/mapfiles/ms/micons/red.png",
+    greenIcon: "https://maps.google.com/mapfiles/ms/micons/green.png",
 };
 
 export const infoWinClassNames = {
