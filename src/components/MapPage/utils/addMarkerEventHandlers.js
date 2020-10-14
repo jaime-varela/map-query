@@ -9,13 +9,11 @@ export default async (map, markerMap, markerInfo,service) => {
         let placeId = marker.name;
         let poi1 = markerInfo.pointsOfInterest1.find(poi => poi.place_id == placeId);
         let poi2 = markerInfo.pointsOfInterest2.find(poi => poi.place_id == placeId);
+        let infowindow = new window.google.maps.InfoWindow();
         marker.addListener("click", async () => {
             let poi = poi1 ? poi1 : poi2;
             const contentString = await infoWindowString(poi, service);
-        
-            const infowindow = new window.google.maps.InfoWindow({
-              content: contentString,
-            });    
+            infowindow.setContent(contentString);
             infowindow.open(map, marker);
             /*
               Event handlers of info window childs must be handled only when they are domready.

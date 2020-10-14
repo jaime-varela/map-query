@@ -48,10 +48,10 @@ export class QueryForm extends Component {
               <Form.Group controlId="formPointOfInterest1">
                 <Form.Label>Find </Form.Label>
                 <Row>
-                  <Col>
+                  <Col xs={9}>
                     <Form.Control id={formIDS.poi1} type="text" placeholder={placeHolder.poi1} />
                   </Col>
-                  <Col sm={2}>
+                  <Col xs={1}>
                     <Image src={iconURLS.redIcon} roundedCircle />
                   </Col>
                 </Row>
@@ -60,10 +60,10 @@ export class QueryForm extends Component {
               <Form.Group controlId="formPointOfInterest2">
                 <Form.Label>And</Form.Label>
                 <Row>
-                  <Col>
+                  <Col xs={9}>
                     <Form.Control id={formIDS.poi2} type="text" placeholder={placeHolder.poi2} />
                   </Col>
-                  <Col sm={2}>
+                  <Col xs={1}>
                     <Image src={iconURLS.blueIcon} roundedCircle />
                   </Col>
                 </Row>

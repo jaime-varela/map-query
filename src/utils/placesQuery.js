@@ -15,6 +15,9 @@ export const placeQuery = async (maps,map,queryText,radius,location) => {
       if (status === places.PlacesServiceStatus.OK) {
         resolve(results);
       }
+      if (status === places.PlacesServiceStatus.ZERO_RESULTS) {
+        resolve([]);
+      }
       //TODO reject error handling
     });
   })    

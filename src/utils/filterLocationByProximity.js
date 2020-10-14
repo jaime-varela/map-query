@@ -37,11 +37,12 @@ export default (POI1, POI2 ,distance, aCase) => {
     if(distNum == 0 || aCase == null) {
         return {filteredPOI1: POI1, filteredPOI2: POI2};
     }
+    // if one POI is empty then nothing is near the other
     if(POI1 == null || POI2 == null) {
-        return {filteredPOI1: POI1, filteredPOI2: POI2};
+        return {filteredPOI1: [], filteredPOI2: []};
     }
     if(POI1.length == 0 || POI2.length == 0) {
-        return {filteredPOI1: POI1, filteredPOI2: POI2};
+        return {filteredPOI1: [], filteredPOI2: []};
     }
     // visitor array
     let hasPOI2ElementBeenAdded = [];
