@@ -37,9 +37,11 @@ export default async (poi,service) => {
       // delete the current day
       delete shiftedDayArray[0];
     }
-
+    // runtime media query
+    const isDesktopOrLaptop = window.matchMedia("(min-width: 1224px)").matches;
+    const cardWidth = (isDesktopOrLaptop)? '18rem' : '12rem';
     return renderToString(
-      <Card style={{ width: '18rem' }}>
+      <Card style={{ width: cardWidth }}>
         {poi.photos? <MediaQuery minDeviceWidth={1224}><Card.Img variant="top" src={poi.photos[0].getUrl()} /></MediaQuery> 
         : <div></div>}
         <Card.Body>
@@ -56,7 +58,8 @@ export default async (poi,service) => {
             }): <div></div>}
           </div>
           <div class={infoWinClassNames.OpenClosedInfo}>
-            {isOpen? <p style={{color:"green"}}><strong>open now</strong></p>:<p style={{color:"red"}}><strong>closed or no info</strong></p>}
+            {isOpen? <p style={{color:"green"}}><strong>open now</strong></p>:
+            <p style={{color:"red"}}>{currentDay? <strong>closed</strong>:<strong>no info</strong>}</p>}
           </div>
           <MediaQuery minDeviceWidth={1224}>
           <Card.Text>
