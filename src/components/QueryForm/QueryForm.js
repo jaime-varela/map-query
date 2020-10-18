@@ -25,6 +25,13 @@ export class QueryForm extends Component {
         this.setState({...this.state,loading:true});
         await this.props.updatePointsOfInterestQuery();
         this.setState({...this.state,loading:false});
+        // runtime media query
+        const isDesktopOrLaptop = window.matchMedia("(min-width: 1224px)").matches;
+        // click the side bar button if on mobile (temp work around)
+        if(!isDesktopOrLaptop) {
+          document.getElementById("sideBarButtonClickID").click();
+        }
+
       };
 
     handleViewDistanceClick = () => {

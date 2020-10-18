@@ -31,6 +31,7 @@ export default ({ width, height, children }) => {
         }}
       >
         <button
+          id="sideBarButtonClickID"
           onClick={() => toggleMenu()}
           className="toggle-menu"
           style={{
