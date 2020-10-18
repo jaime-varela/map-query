@@ -51,6 +51,11 @@ export class MapContainer extends Component {
     if (!this.state.hasCenterMoved) {
       centerMapToLocation(map)
     }
+    // runtime media query
+    const isDesktopOrLaptop = window.matchMedia("(min-width: 1224px)").matches;
+    if(!isDesktopOrLaptop) {
+      map.setOptions({gestureHandling: 'greedy'});
+    }
     let service = new window.google.maps.places.PlacesService(map);
     this.setState({map: map, maps: mapProps, detailService: service });
   }

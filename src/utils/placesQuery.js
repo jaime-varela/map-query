@@ -19,6 +19,7 @@ export const placeQuery = async (maps,map,queryText,radius,location) => {
         resolve([]);
       }
       //TODO reject error handling
+      resolve([]);
     });
   })    
 }
