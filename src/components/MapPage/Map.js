@@ -66,7 +66,7 @@ export class MapContainer extends Component {
         google={this.props.google}
         zoom={15}
         style={basicStyle}
-        initialCenter={{ lat: 47.444, lng: -122.176 }}
+        initialCenter={{ lat: 42.355, lng: -71.064 }}
         clickableIcons={true}
         onReady={this.onReady}
         onDragend={this.onBoundsChanged}

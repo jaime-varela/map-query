@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import Map from './components/MapPage/Map'
 import Sidebar from './components/SidePanel/Sidebar'
 import QueryForm from './components/QueryForm/QueryForm'
+import MoveTo from './components/MoveTo/MoveTo'
 import { cases } from "./constants"
 import { formIDS } from './components/QueryForm/queryConstants'
+import { moveToForm } from './components/MoveTo/constants'
 import { placeQuery } from './utils/placesQuery'
 import computeRadiusFromMap from './utils/computeRadiusFromMap';
 import filterLocationByProximity from './utils/filterLocationByProximity'
 import MediaQuery from 'react-responsive'
+import Tab from 'react-bootstrap/Tab'
+import Tabs from 'react-bootstrap/Tabs'
 
 const gMapsKey = "AIzaSyBPLt1VwIxDl8r2YbDCx_ND_l7mebTzRtM";
 
@@ -16,6 +20,7 @@ class App extends Component {
     super(props)
     this.updatePointsOfInterestQuery = this.updatePointsOfInterestQuery.bind(this); 
     this.setGoogleReferences = this.setGoogleReferences.bind(this);  
+    this.reCenterMapFromQuery = this.reCenterMapFromQuery.bind(this);
   }
   
   // callback to update google references when map loads, I really should manage state better
@@ -69,18 +74,48 @@ class App extends Component {
       adjacencyList: filteredPoints.adjacencyList,
     });
   };
+
+  reCenterMapFromQuery = async () => {
+    const moveQuery = document.getElementById(moveToForm.moveToQuery);
+    if(moveQuery == null) {return;}
+    const queryText = moveQuery.value;
+    if(queryText == "" || queryText == null) {return;}
+    let request = {
+      query: queryText,
+      fields: ['name', 'geometry'],
+    };
+  
+    let service = new window.google.maps.places.PlacesService(this.state.map);
+  
+    service.findPlaceFromQuery(request, (results, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+        // First result assigned to center
+        this.state.map.setCenter(results[0].geometry.location);
+      }
+    });
+  }
+
   render() {
     return (
       <div className="viewport">
         <MediaQuery maxDeviceWidth={1224}>
         <div className="sideBarContainerMobile">
           <Sidebar width={250} height={"100vh"}>
-            <QueryForm 
-            updatePointsOfInterestQuery={this.updatePointsOfInterestQuery}
-            googleRef = {this.state.maps}
-            googleMap = {this.state.map}>
-            </QueryForm>
-        </Sidebar>
+          <Tabs defaultActiveKey="query" id="uncontrolled-tab-example">
+              <Tab eventKey="query" title="Query">
+                <QueryForm 
+                updatePointsOfInterestQuery={this.updatePointsOfInterestQuery}
+                googleRef = {this.state.maps}
+                googleMap = {this.state.map}>
+                </QueryForm>
+              </Tab>
+              <Tab eventKey="moveTo" title="Move To">
+                <MoveTo
+                reCenterMap={this.reCenterMapFromQuery}
+                ></MoveTo>
+              </Tab>
+          </Tabs>
+          </Sidebar>
         </div>
         <div className="static-pane-mobile">
           <Map 
@@ -98,11 +133,20 @@ class App extends Component {
         <MediaQuery minDeviceWidth={1224}>
         <div className="sideBarContainer">
           <Sidebar width={400} height={"100vh"}>
-            <QueryForm 
-            updatePointsOfInterestQuery={this.updatePointsOfInterestQuery}
-            googleRef = {this.state.maps}
-            googleMap = {this.state.map}>
-            </QueryForm>
+          <Tabs defaultActiveKey="query" id="uncontrolled-tab-example">
+              <Tab eventKey="query" title="Query">
+                <QueryForm 
+                updatePointsOfInterestQuery={this.updatePointsOfInterestQuery}
+                googleRef = {this.state.maps}
+                googleMap = {this.state.map}>
+                </QueryForm>
+              </Tab>
+              <Tab eventKey="moveTo" title="Move To">
+              <MoveTo
+                reCenterMap={this.reCenterMapFromQuery}
+              ></MoveTo>
+              </Tab>
+          </Tabs>
           </Sidebar>
         </div>
         <div className="static-pane">
