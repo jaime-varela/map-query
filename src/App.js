@@ -3,7 +3,7 @@ import Map from './components/MapPage/Map'
 import Sidebar from './components/SidePanel/Sidebar'
 import QueryForm from './components/QueryForm/QueryForm'
 import MoveTo from './components/MoveTo/MoveTo'
-import { cases } from "./constants"
+import { cases, resourceURLS } from "./constants"
 import { formIDS } from './components/QueryForm/queryConstants'
 import { moveToForm } from './components/MoveTo/constants'
 import { placeQuery } from './utils/placesQuery'
@@ -21,6 +21,7 @@ class App extends Component {
     this.updatePointsOfInterestQuery = this.updatePointsOfInterestQuery.bind(this); 
     this.setGoogleReferences = this.setGoogleReferences.bind(this);  
     this.reCenterMapFromQuery = this.reCenterMapFromQuery.bind(this);
+    this.recenterMap = this.recenterMap.bind(this);
   }
   
   // callback to update google references when map loads, I really should manage state better
@@ -41,8 +42,25 @@ class App extends Component {
     displayPOI1: [],
     displayPOI2: [],
     adjacencyList: {},
+    // country data
+    isCountryDataLoaded: false,
+    countryData: [],
   };
   
+  async componentDidMount() {
+    fetch(resourceURLS.countryCityData, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      this.setState({isCountryDataLoaded: true,countryData: result});
+    });      
+
+  }
+
   updatePointsOfInterestQuery = async () => {    
 
     const poi1Element = document.getElementById(formIDS.poi1);
@@ -95,6 +113,10 @@ class App extends Component {
     });
   }
 
+  recenterMap = geometry => {
+    this.state.map.setCenter(geometry);
+  }
+
   render() {
     return (
       <div className="viewport">
@@ -111,7 +133,10 @@ class App extends Component {
               </Tab>
               <Tab eventKey="moveTo" title="Move To">
                 <MoveTo
-                reCenterMap={this.reCenterMapFromQuery}
+                reCenterMapFromQuery={this.reCenterMapFromQuery}
+                recenterMap={this.recenterMap}
+                countryData={this.state.countryData}
+                isCountryDataLoaded={this.state.isCountryDataLoaded}
                 ></MoveTo>
               </Tab>
           </Tabs>
@@ -143,7 +168,10 @@ class App extends Component {
               </Tab>
               <Tab eventKey="moveTo" title="Move To">
               <MoveTo
-                reCenterMap={this.reCenterMapFromQuery}
+                reCenterMapFromQuery={this.reCenterMapFromQuery}
+                recenterMap={this.recenterMap}
+                countryData={this.state.countryData}
+                isCountryDataLoaded={this.state.isCountryDataLoaded}
               ></MoveTo>
               </Tab>
           </Tabs>
