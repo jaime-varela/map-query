@@ -12,6 +12,7 @@ import filterLocationByProximity from './utils/filterLocationByProximity'
 import MediaQuery from 'react-responsive'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
+import SettingsPannel from './components/SettingsPanel/SettingsPanel'
 
 const gMapsKey = "AIzaSyBPLt1VwIxDl8r2YbDCx_ND_l7mebTzRtM";
 
@@ -139,6 +140,9 @@ class App extends Component {
                 isCountryDataLoaded={this.state.isCountryDataLoaded}
                 ></MoveTo>
               </Tab>
+              <Tab eventKey="settings" title="Settings">
+                <SettingsPannel></SettingsPannel>
+              </Tab>
           </Tabs>
           </Sidebar>
         </div>
@@ -173,6 +177,9 @@ class App extends Component {
                 countryData={this.state.countryData}
                 isCountryDataLoaded={this.state.isCountryDataLoaded}
               ></MoveTo>
+              </Tab>
+              <Tab eventKey="settings" title="Settings">
+                <SettingsPannel></SettingsPannel>
               </Tab>
           </Tabs>
           </Sidebar>
