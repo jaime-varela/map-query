@@ -13,7 +13,7 @@ import MediaQuery from 'react-responsive'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 
-const gMapsKey = process.env.GMAPSKEY;
+const gMapsKey = process.env.REACT_APP_GMAPSKEY;
 
 class App extends Component {
   constructor(props) {
