@@ -14,7 +14,7 @@ import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 import SettingsPannel from './components/SettingsPanel/SettingsPanel'
 
-const gMapsKey = "AIzaSyBPLt1VwIxDl8r2YbDCx_ND_l7mebTzRtM";
+const gMapsKey = process.env.gmapsKey;
 
 class App extends Component {
   constructor(props) {
