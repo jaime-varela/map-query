@@ -14,7 +14,7 @@ import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 
 const gMapsKey = process.env.REACT_APP_GMAPSKEY;
-
+//TODO multi poi query implementation
 class App extends Component {
   constructor(props) {
     super(props)
@@ -39,8 +39,8 @@ class App extends Component {
     // maps refs
     map: null,
     maps: null,
-    displayPOI1: [],
-    displayPOI2: [],
+    numPOIs : 2,
+    displayPOIs : [{}],
     adjacencyList: {},
     // country data
     isCountryDataLoaded: false,
@@ -61,7 +61,7 @@ class App extends Component {
 
   }
 
-  updatePointsOfInterestQuery = async () => {    
+  updatePointsOfInterestQuery = async (numPois) => {    
 
     const poi1Element = document.getElementById(formIDS.poi1);
     const poi2Element = document.getElementById(formIDS.poi2);
