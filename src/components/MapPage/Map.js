@@ -26,17 +26,18 @@ export class MapContainer extends Component {
       this.setState({ ...this.state, hasCenterMoved: true });
     }
     // for debuging use bounds change to check state
-    // console.log(this.state);
+    // Add any debug code here
   }
 
   async componentDidUpdate(prevProps, prevState, snapshot) {
     if(prevProps.markerInfo !== this.props.markerInfo) {
       clearMarkers(prevState.markerMap);
       clearMarkers(this.state.markerMap);
-      let markerMapping = populateMarkers(this.state.map,this.props.markerInfo.pointsOfInterest1,this.props.markerInfo.pointsOfInterest2);  
-      await addMarkerEventHandlers(this.state.map,markerMapping,this.props.markerInfo,this.state.detailService);
-      if(markerMapping) {
-        this.setState({markerMap: markerMapping});
+      let markerMaps = populateMarkers(this.state.map,this.props.markerInfo.markerPoiArrays);  
+      let adjacencyList = (this.props.markerInfo)? this.props.markerInfo.adjacencyList : {};
+      await addMarkerEventHandlers(this.state.map,markerMaps.makerMap,markerMaps.poiMap,adjacencyList,this.state.detailService);
+      if(markerMaps.makerMap) {
+        this.setState({markerMap: markerMaps.makerMap});
       }
     }
   }

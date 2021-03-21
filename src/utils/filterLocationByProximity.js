@@ -24,7 +24,7 @@ export const caseConversionMap = (aCase) => {
         return 84.0; // avg human walking speed = 1.4 m/s ==> 1.4 (m/s) * 60 (s/min) * (Minutes walking) = distance
     }
     else if(aCase == cases.MINUTES_DRIVING){
-        return 0;//TODO
+        return 0;//TODO implement driving time
     }
     return 0;
 }
