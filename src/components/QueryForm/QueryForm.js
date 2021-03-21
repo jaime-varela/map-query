@@ -69,7 +69,7 @@ export class QueryForm extends Component {
     // --------------- Begin Tooltip renders ----------------------
     renderToggleDistanceTooltip = (props) => (
       <Tooltip id="toggleDistanceTooltip" {...props}>
-        {this.state.viewDistance? "Ignore Distance":"Restrict by distance"}
+        {(this.state.numPOIs != 2)? "can only distance filter 2 places": this.state.viewDistance? "Ignore Distance":"Restrict by distance"}
       </Tooltip>
     );
 
@@ -108,7 +108,7 @@ export class QueryForm extends Component {
                 </Button>
                 </OverlayTrigger>
               </Form.Group>
-              {(!this.state.viewDistance)?               
+              {(!this.state.viewDistance || this.state.numPOIs !=2)?               
               <div></div>:<Form.Group controlId="formDistanceSpecification">
                 <MediaQuery  minDeviceWidth={1224}>
                   <DistanceFormText></DistanceFormText>

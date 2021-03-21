@@ -31,8 +31,7 @@ class App extends Component {
   // local state for now
   // might use redux later
   state = {
-    pointsOfInterest1: [],
-    pointsOfInterest2: [],
+    pointsOfInterestArrays: [[{}]],
     distanceSpecification: 0,
     distanceCase: cases.MINUTES_WALKING,
     radius: 0.0,
@@ -40,7 +39,6 @@ class App extends Component {
     map: null,
     maps: null,
     numPOIs : 2,
-    displayPOIs : [{}],
     adjacencyList: {},
     // country data
     isCountryDataLoaded: false,
@@ -63,33 +61,39 @@ class App extends Component {
 
   updatePointsOfInterestQuery = async (numPois) => {    
 
-    const poi1Element = document.getElementById(formIDS.poi1);
-    const poi2Element = document.getElementById(formIDS.poi2);
     const distanceNumElement = document.getElementById(formIDS.distanceNumber);
     const distanceCaseElement = document.getElementById(formIDS.distanceCase);
-
     // Google maps displays results outside of the range so this factor is used to tune
     const compensatingFactor = 0.5;
     const radius = compensatingFactor * computeRadiusFromMap(this.state.map);
     const center = this.state.map.getCenter();
 
-    const POI1 = await placeQuery(this.state.maps,this.state.map,poi1Element.value,radius,center);
-    const POI2 = await placeQuery(this.state.maps,this.state.map,poi2Element.value,radius,center);
+    let pois = [];
+    for (let poiInd = 0; poiInd < numPois; poiInd++) {
+      const poi1Element = document.getElementById(formIDS.poiIds[poiInd]);
+      const queriedPOIs = await placeQuery(this.state.maps,this.state.map,poi1Element.value,radius,center);
+      pois[poiInd] = queriedPOIs;
 
-    let filteredPoints = {filteredPOI1: POI1,filteredPOI2:POI2};
-    if(distanceCaseElement && distanceNumElement)
-    {
-      filteredPoints = filterLocationByProximity(POI1,POI2,distanceNumElement.value,distanceCaseElement.value);
     }
+    let adjacencyList = {};
+    if(numPois == 2)
+    {
+      let filteredPoints = {filteredPOI1: pois[0],filteredPOI2:pois[1]};
+      if(distanceCaseElement && distanceNumElement && numPois == 2)
+      {
+        filteredPoints = filterLocationByProximity(pois[0],pois[1],distanceNumElement.value,distanceCaseElement.value);
+      }
+      pois[0] = filteredPoints.filteredPOI1;
+      pois[1] = filteredPoints.filteredPOI2;
+      adjacencyList = filteredPoints.adjacencyList;
+    }
+
     //remember you're sending this state to the map
     this.setState({...this.state,
-      pointsOfInterest1:POI1,
-      pointsOfInterest2:POI2,
       distanceSpecification: distanceNumElement? Number(distanceNumElement.value) : 0.0,
       distanceCase: distanceCaseElement? Number(distanceCaseElement.value) : cases.MINUTES_WALKING,
-      displayPOI1: filteredPoints.filteredPOI1,
-      displayPOI2: filteredPoints.filteredPOI2,
-      adjacencyList: filteredPoints.adjacencyList,
+      pointsOfInterestArrays: pois,
+      adjacencyList: adjacencyList,
     });
   };
 
@@ -147,8 +151,7 @@ class App extends Component {
           googleMapKey={gMapsKey}
           setGoogleReferences={this.setGoogleReferences}
           markerInfo={{
-            pointsOfInterest1:this.state.displayPOI1,
-            pointsOfInterest2:this.state.displayPOI2,
+            markerPoiArrays:this.state.pointsOfInterestArrays,
             distanceSpecification: this.state.distanceSpecification,
             distanceCase:this.state.distanceCase,
           }}
@@ -182,8 +185,7 @@ class App extends Component {
           googleMapKey={gMapsKey}
           setGoogleReferences={this.setGoogleReferences}
           markerInfo={{
-            pointsOfInterest1:this.state.displayPOI1,
-            pointsOfInterest2:this.state.displayPOI2,
+            markerPoiArrays:this.state.pointsOfInterestArrays,
             distanceSpecification: this.state.distanceSpecification,
             distanceCase:this.state.distanceCase,
             adjacencyList: this.state.adjacencyList,
